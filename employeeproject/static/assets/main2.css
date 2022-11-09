@@ -1,0 +1,90 @@
+.navb{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    
+}
+.navbar-default{
+    background-color:white !important;
+   
+}
+.nav li a{
+   
+    background-color: transparent !important;
+    color: black !important;
+    
+}
+
+.navbar-right {
+    padding-right: 100px;
+    margin-top: 20px;
+    font-size: 25px;
+    font-family:Arial, Helvetica, sans-serif;
+    font:bold;
+    color: black;
+    
+    
+}
+.nav  a:hover{
+    color: blue !important;
+    text-decoration: underline solid 2px rgb(203, 189, 37) !important;
+}
+.navbar-brand{
+    margin-top: 5px;
+    padding-left: 120px;
+    color: black !important;
+    font-size: 30px;
+    letter-spacing: 1px;
+    font-family: cursive;
+}
+.part3 .card{
+    background-color: #dee1db80;
+    padding: 20px 60px 20px 60px;
+    margin-top: 60px;
+    margin-right: 30%;
+    margin-left: 30%;
+    
+    
+}
+
+#timer {
+    margin: 70px 0px 50px 0px;
+   
+   
+}
+.circle {
+    background-color:#fff;
+    border:5px dotted red ;    
+    height:300px;
+    border-radius:50%;
+    -moz-border-radius:50%;
+    -webkit-border-radius:50%;
+    width:300px;
+    padding: 100px 0px 0px 0px;
+}
+#timer span{
+    font-size: 50px;
+    color: rgb(179, 104, 191);
+}
+.container {
+    padding: 16px;
+   
+}
+.alert{
+    width: 400px;
+}
+.regbtn{
+    width: 100px;
+    height: 50px;
+}
+.profile-image {
+    width: 125px;
+    height: 125px;
+    padding: 5px
+  }
+.cal i{
+    margin: 0px 0px 0px 350px;
+    
+}
+.pro{
+    margin: 0px 0px 0px 200px;
+}

@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'assets/ass/bootstrap.min.css' %}">
+    <link href="{% static 'assets/main2.css' %}" rel="stylesheet">
+    <title>documantion</title>
+</head>
+
+
+<body>
+    {% block content %}
+    Welcome {{user.username}}, you are loged in
+    {% if request.user.is_superuser %}
+    <header>
+        <nav class="navbar navbar-default navb">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">WebSiteName</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="{% url 'create_employee'  %}"> Create Employee</a></li>
+                    <li><a href="{% url 'signout' %}">Signout</a</li>
+                    <li><a href="#"></a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    {% else %}
+    <header>
+        <nav class="navbar navbar-default navb">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">WebSiteName</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="{% url 'attendance' %}">Attedance</a></li>
+                    <li><a href="{% url 'signout' %}">SignOUt</a></li>
+                    <li><a href="{% url 'timespend' %}">Time Spend</a></li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    {% endif %}
+    {% endblock content %}
+    <script src="{% static 'assets/ass/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/ass/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

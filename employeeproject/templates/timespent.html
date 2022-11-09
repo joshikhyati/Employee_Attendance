@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'assets/ass/bootstrap.min.css' %}">
+  <script src="{% static 'assets/ass/jquery.min.js' %}"></script>
+  <script src="{% static 'assets/ass/bootstrap.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'assets/ass/font-awesome.min.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="{% static 'assets/main2.css' %}" rel="stylesheet">
+  <title>documantion</title>
+</head>
+<style>
+  #stopTimer {
+    display: none;
+  }
+  #start{
+    width: 200px;
+    height: 60px;
+    border-radius: 50px 50px 50px 50px;
+    border: 3px solid blue;
+    background-color: rgb(244, 16, 16);
+    font-size: 40px;
+    margin: 0% 0% 0% 60%;
+  }
+  #controls .out{
+    width: 200px;
+    height: 60px;
+    border-radius: 50px 50px 50px 50px;
+    border: 3px solid blue;
+    background-color: rgb(45, 93, 24);
+    font-size: 40px;
+    margin: 0% 0% 0% 60%;
+  }
+  .showdiff input{
+    margin: 20px 0px 0px 0px;
+    height: 40px;
+    width: 250px;
+    border-radius: 30px 30px 30px 30px;
+    border: 2px solid black;
+  }
+  table{
+    margin-top: 50px;
+    height: 400px;
+    width: 800px;
+    text-align: center;
+    font-size: 18px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    border: 2px black solid;
+  }
+ table tr th{
+  text-align: center;
+  border: 2px black solid;
+ }
+ table tr td{
+  text-align: center;
+  border: 2px black solid;
+ }
+</style>
+
+<body>
+  <header>
+    <nav class="navbar navbar-default navb">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{% url 'index' %}">WebSiteName</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="active"><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="#"></a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        {% if request.user.is_authenticated %}
+        <div class="pro">
+        <img src="{{pic.url}}" class="profile-image" style="border-radius: 50% 50% 50% 50%; height: 200px; width: 200px;">
+        <h2 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;">Welcome
+          {{user.username}}</h2>
+        {% endif %}
+      </div>
+      </div>
+      <div class="col-md-6">
+        <div class="cal" style="margin: 0px 0px 0px 540px;">
+          <h3> <i class="fa fa-calendar" style="font-size:24px;color: blue;"></i>
+            {% now "jS M Y " %}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div id="controls">
+          <button id="start" class="in">PunchIn</button>
+          <button id="stop" class="out" hidden>Punchout</button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="showdiff">
+        <input type="datetime" id="time">
+      </div>
+      </div>
+      <center>
+      <div class="row">
+        <div class="col-md-12">
+        <div class="panel-body">
+          <table border="1" id="table1" class="log">
+            <tbody>
+              <tr>
+                <th>Punch In</th>
+                <th>Punch Out</th>
+                <th>Total</th>
+              </tr>
+
+
+              {% for tspent in ts %}
+
+              <tr class="parent">
+                <td class="punchin">{{tspent.punchin}}</td>
+                <td class="punchout">{{tspent.punchout}}</td>
+                <td>{{tspent.punchin - tspent.punchout}}</td>
+              </tr>
+              {% endfor %}
+
+
+            </tbody>
+          </table>
+        </div>
+        </div>
+      </div>
+    </center>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- <center>
+    <div id="timer">
+      <div class="circle">
+      <span id="hours">00:</span>
+      <span id="mins">00:</span>
+      <span id="seconds">00</span>
+    </div>
+    </div>
+  
+  </center> -->
+  </div>
+
+
+
+  <script>
+    var hours = 0;
+    var mins = 0;
+    var seconds = 0;
+
+    $('#start').click(function () {
+      $("#stop").show();
+      $("#start").hide();
+
+      data = {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        start_timer: 'True'
+
+      }
+      $.post("{% url 'timespend' %}", data, function (response) {
+        $(".parent > td:nth-of-type(1)").append('<tr><td>' + response.punchin + '</td></tr>');
+        console.log(response)
+
+      });
+      startTimer();
+
+    });
+
+    $('#stop').click(function () {
+      $("#start").show();
+      $("#stop").hide();
+      clearTimeout(timex);
+      data = {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        stop_timer: 'True'
+
+      }
+      $.post("{% url 'timespend' %}", data, function (response) {
+        $(".parent > td:nth-of-type(2)").append('<tr><td>' + response.stop_timer_time + '</td></tr>');
+        console.log(response)
+        $("#time").val(response.diff);
+        $(".parent > td:nth-of-type(3)").append('<tr><td><time>' + response.diff + '</time></td></tr>');
+      });
+    });
+
+    $('#reset').click(function () {
+      hours = 0; mins = 0; seconds = 0;
+      $('#hours', '#mins').html('00:');
+      $('#seconds').html('00');
+    });
+
+    function startTimer() {
+      timex = setTimeout(function () {
+        seconds++;
+
+        if (seconds > 59) {
+          seconds = 0; mins++;
+          if (mins > 59) {
+            mins = 0; hours++;
+            if (hours < 10) { $("#hours").text('0' + hours + ':') } else $("#hours").text(hours + ':');
+          }
+
+          if (mins < 10) {
+            $("#mins").text('0' + mins + ':');
+          }
+          else $("#mins").text(mins + ':');
+        }
+        if (seconds < 10) {
+          $("#seconds").text('0' + seconds);
+        } else {
+          $("#seconds").text(seconds);
+        }
+        startTimer();
+      });
+    }
+
+    // $('#start')
+    //           .on('click', () => document.getElementById('table1').innerText = '{{tspent.punchin }}')
+  </script>
+</body>
+
+</html>

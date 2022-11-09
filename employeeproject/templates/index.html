@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <header>
+        <nav class="navbar navbar-default navb">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'index' %}">WebSiteName</a>
+              </div>
+              <ul class="nav navbar-nav navbar-right">
+                {% if not request.user.is_authenticated %}
+                <li class="active"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'login_user' %}">Login</a></li>
+                {% else %}
+                <li class="active"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'dashboard' %}">dashboard</a></li>
+                {% endif %}
+                <li><a href="#"></a></li>
+              </ul>
+            </div>
+          </nav>
+    </header>
+    <section>
+      <div class="container-fluid">
+        <div class="bgimg">
+        <h1>Empowered Success</h1>
+        </div>
+      </div>
+    </section>
+{%endblock%}

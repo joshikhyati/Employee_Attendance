@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    Welcome {{user.username}}, you are loged in
+    {% if request.user.is_superuser %}
+    <header>
+        <nav class="navbar navbar-default navb">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">WebSiteName</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'create_employee'  %}"> Create Employee</a></li>
+                    <li><a href="{% url 'signout' %}">Signout</a</li>
+                    <li><a href="#"></a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    {% else %}
+    <header>
+        <nav class="navbar navbar-default navb">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{% url 'index' %}">WebSiteName</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="{% url 'index' %}">Home</a></li>
+                
+                    <li><a href="{% url 'signout' %}">SignOUt</a></li>
+                    <li><a href="{% url 'timespend' %}">Time Spend</a></li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    {% endif %}
+
+    
+</body>
+
+{%endblock%}
