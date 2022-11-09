@@ -1,1 +1,9 @@
 
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+
+.hello
+db.sqlite3
