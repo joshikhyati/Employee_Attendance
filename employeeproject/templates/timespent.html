@@ -46,7 +46,7 @@
   }
   table{
     margin-top: 50px;
-    height: 400px;
+    height: 80px;
     width: 800px;
     text-align: center;
     font-size: 18px;
@@ -89,17 +89,22 @@
       </div>
       </div>
       <div class="col-md-6">
-        <div class="cal" style="margin: 0px 0px 0px 540px;">
-          <h3> <i class="fa fa-calendar" style="font-size:24px;color: blue;"></i>
-            {% now "jS M Y " %}</h3>
+        <div class="cal" style="margin: 0px 0px 0px 0px;">
+          <h3><i class="fa fa-calendar" style="font-size:24px;color: blue;"></i>
+          {% now "jS M Y " %}</h3>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-md-6">
         <div id="controls">
+          <!-- Jo is_punch_in True hoi PUnch in hide karo and punch out show karo
+          Jo is_punch_in False hoi to Punch out hide karo and punch in show karo -->
+          <!-- {% if is_punch_in == False %} -->
           <button id="start" class="in">PunchIn</button>
+          <!-- {% else %} -->
           <button id="stop" class="out" hidden>Punchout</button>
+          <!-- {% endif %} -->
         </div>
       </div>
       <div class="col-md-6">
@@ -118,18 +123,13 @@
                 <th>Punch Out</th>
                 <th>Total</th>
               </tr>
-
-
-              {% for tspent in ts %}
-
+              {% for time_spent in all_times %}
               <tr class="parent">
-                <td class="punchin">{{tspent.punchin}}</td>
-                <td class="punchout">{{tspent.punchout}}</td>
-                <td></td>
+                <td class="punchin">{{time_spent.punchin}}</td>
+                <td class="punchout">{{time_spent.punchout}}</td>
+                <td>{{time_spent.time_difference}}</td>
               </tr>
               {% endfor %}
-
-
             </tbody>
           </table>
         </div>
@@ -158,7 +158,7 @@
     var hours = 0;
     var mins = 0;
     var seconds = 0;
-
+    
     $('#start').click(function () {
       $("#stop").show();
       $("#start").hide();

@@ -123,20 +123,43 @@ def timespend(request):
             response = {'success': True,'stop_timer_time':stop_timer_time,'diff':diff}
         return JsonResponse(response)
     if request.method == "GET":
+    
         if request.user.is_authenticated:
             emp1=Employee.objects.get(user_id=request.user)
             emp=Attendance.objects.filter(employee=emp1).last()
-            ts = Timespend.objects.filter(attendance=emp)
-            
-            
-            
+            all_time_spent = Timespend.objects.filter(attendance=emp)
+            all_times = []
+            if Timespend.get_deferred_fields:
+                for time_spent in all_time_spent:
+                    punchin_time_obj = datetime.time(time_spent.punchin)
+                    time_difference = 0
+                    if time_spent.punchout:
+                        punchout_time_obj = datetime.time(time_spent.punchout)
+                        time_difference = datetime.combine(datetime.today(), punchout_time_obj) - datetime.combine(datetime.today(), punchin_time_obj)
+                    time_dict = {
+                        'punchin': time_spent.punchin.strftime('%H:%M:%S'),
+                        'punchout': time_spent.punchout.strftime('%H:%M:%S') if time_spent.punchout else '',
+                        'time_difference': time_difference
+                        
+                    }
+                    all_times.append(time_dict)
+                
             
         # Get all objects
         # Attendance Empy TimeSpend 
         # Filter them properly 
         # Create context
         # Send to html   
+        # is_punched_in = False
+        
+        ts=Timespend.objects.latest()
+        if Timespend.punchout==None:
+         is_punched_in = True
+
+        # JO Timespent no latest object mde
+        # ane ema punchout null hoi to 
+        # is_punched_in = True kari deva nu
     
-        context = {"ts":ts}
+        context = {'all_times': all_times,'is_punched_in':is_punched_in}
     return render(request, 'timespent.html', context )
 
